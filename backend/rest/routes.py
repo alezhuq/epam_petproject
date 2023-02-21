@@ -8,6 +8,10 @@ from backend.models.models import Company, db, City, Service
 
 ALLOWED_EXTENTIONS = ('png', 'jpg', 'jpeg',)
 UPLOAD_FOLDER = 'static/uploads/'
+try:
+    os.mkdir(UPLOAD_FOLDER)
+except OSError as error:
+    pass
 api = Blueprint('api', __name__)
 
 
