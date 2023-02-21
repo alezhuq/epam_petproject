@@ -2,8 +2,7 @@ language: python
 python:
     - "3.9"
 install:
-  - pip install -r requirements.txt
+  - pip install testcompany_petproject
 
 script:
-  - coverage run --source=testcompany_petproject -m unittest backend/tests/test_CRUD.py
-  - coverage report
+  - coverage run --source=testcompany_petproject -m unittest backend/tests/test_CRUD.py dicsover
