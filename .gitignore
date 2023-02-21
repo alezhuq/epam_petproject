@@ -1,3 +1,2 @@
-backend/data
-backend/.env
-../.idea
+data
+.env
