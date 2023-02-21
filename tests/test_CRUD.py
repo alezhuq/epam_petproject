@@ -2,7 +2,7 @@ import json
 import unittest
 import io
 from PIL import Image
-from app import db
+from app import app, db
 from models.models import Company, Service
 
 
