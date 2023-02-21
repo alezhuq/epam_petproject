@@ -2,7 +2,7 @@ language: python
 python:
     - "3.9"
 install:
-  - pip install -r backend/requirements.txt
+  - pip install -r requirements.txt
 
 script:
-  - python -m unittest backend/tests/test_CRUD.py
+  - python -m unittest tests/test_CRUD.py
