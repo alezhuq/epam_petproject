@@ -5,6 +5,8 @@ from PIL import Image
 from backend.app import app, db
 from backend.models.models import Company, Service
 
+db.init_app(app)
+
 
 class CompanyTestCase(unittest.TestCase):
     def setUp(self):
