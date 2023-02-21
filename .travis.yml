@@ -3,6 +3,9 @@ python:
     - "3.9"
 install:
   - pip install testcompany_petproject
-
+  - pip install coveralls
 script:
-  - coverage run --source=testcompany_petproject -m unittest discover -s tests/
+  - coverage run -m unittest discover -s tests/
+
+after_success:
+  - coveralls
