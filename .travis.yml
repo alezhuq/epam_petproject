@@ -5,4 +5,5 @@ install:
   - pip install -r requirements.txt
 
 script:
-  - python -m unittest tests/test_CRUD.py
+  - coverage run --source=testcompany_petproject -m unittest backend/tests/test_CRUD.py
+  - coverage report
