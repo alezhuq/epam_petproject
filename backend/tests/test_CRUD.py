@@ -2,8 +2,8 @@ import json
 import unittest
 import io
 from PIL import Image
-from app import app, db
-from models.models import Company, Service
+from backend.app import app, db
+from backend.models.models import Company, Service
 
 
 class CompanyTestCase(unittest.TestCase):

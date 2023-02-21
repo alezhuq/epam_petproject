@@ -4,7 +4,7 @@ import os
 from flask import Blueprint, request, flash, redirect, abort
 from werkzeug.utils import secure_filename
 
-from models.models import Company, db, City, Service
+from backend.models.models import Company, db, City, Service
 
 ALLOWED_EXTENTIONS = ('png', 'jpg', 'jpeg',)
 UPLOAD_FOLDER = 'static/uploads/'
