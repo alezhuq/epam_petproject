@@ -109,6 +109,7 @@ class ServiceTestCase(unittest.TestCase):
             phonenum='1234567890',
             photo='test.jpg'
         )
+
         db.session.add(self.test_company)
         db.session.commit()
 
