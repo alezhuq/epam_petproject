@@ -3,8 +3,8 @@ import os
 from dotenv import load_dotenv
 from flask import Flask
 
-from backend.models.models import db, migrate
-from backend.rest.routes import api
+from models.models import db, migrate
+from rest.routes import api
 
 load_dotenv()
 
