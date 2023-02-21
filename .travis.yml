@@ -5,4 +5,4 @@ install:
   - pip install -r backend/requirements.txt
 
 script:
-  - python -m unittest backend/tests/test_CRUD.py
+  - coverage run --source=mypkg -m unittest backend/tests/test_CRUD.py
