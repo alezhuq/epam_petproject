@@ -48,7 +48,7 @@ def upload_image(photo):
 
 # Company CRUD
 
-@api.route("/company/<int:pk>/", methods=["GET", "PUT", "DELETE"])
+@api.route("/company/<int:pk>", methods=["GET", "PUT", "DELETE"])
 def one_company(pk):
     requested_company = Company.query.filter_by(id=pk).first()
 

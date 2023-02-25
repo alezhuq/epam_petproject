@@ -206,7 +206,7 @@ class CityTestCase(unittest.TestCase):
     def test_get_all_cities(self):
         self.app.post('/city/', data={'name': 'New York'})
         self.app.post('/city/', data={'name': 'San Francisco'})
-        response = self.app.get('/city')
+        response = self.app.get('/city/')
         self.assertEqual(response.status_code, 200)
         cities = json.loads(response.data)
         self.assertEqual(len(cities), 2)
