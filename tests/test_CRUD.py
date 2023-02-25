@@ -40,7 +40,7 @@ class CompanyTestCase(unittest.TestCase):
         self.assertIn(self.test_company.name, str(response.data))
 
     def test_get_one_company(self):
-        response = self.app.get('/company/1')
+        response = self.app.get('/company/1/')
         self.assertEqual(response.status_code, 200)
         self.assertIn(self.test_company.name, str(response.data))
 
@@ -78,12 +78,12 @@ class CompanyTestCase(unittest.TestCase):
 
         data['photo'] = (image_bytes, 'test.jpg')
 
-        response = self.app.put('/company/1', data=data, content_type='multipart/form-data')
+        response = self.app.put('/company/1/', data=data, content_type='multipart/form-data')
         self.assertEqual(response.status_code, 200)
         self.assertIn(data['name'], str(response.data))
 
     def test_delete_company(self):
-        response = self.app.delete('/company/1')
+        response = self.app.delete('/company/1/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data, b'{"result": true}')
 
@@ -136,7 +136,7 @@ class ServiceTestCase(unittest.TestCase):
 
         db.session.add(service)
         db.session.commit()
-        response = self.app.get(f'/service/{service.id}')
+        response = self.app.get(f'/service/{service.id}/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json), 1)
         service = response.json[0]
@@ -159,7 +159,7 @@ class ServiceTestCase(unittest.TestCase):
 
         db.session.add(service)
         db.session.commit()
-        response = self.app.put(f'/service/{service.id}', json={
+        response = self.app.put(f'/service/{service.id}/', json={
             'name': 'Updated Test Service',
             'price': 200
         })
@@ -176,7 +176,7 @@ class ServiceTestCase(unittest.TestCase):
 
         db.session.add(service)
         db.session.commit()
-        response = self.app.delete(f'/service/{service.id}')
+        response = self.app.delete(f'/service/{service.id}/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json, {'result': True})
 
@@ -215,21 +215,21 @@ class CityTestCase(unittest.TestCase):
 
     def test_get_city(self):
         self.app.post('/city/', data={'name': 'New York'})
-        response = self.app.get('/city/1')
+        response = self.app.get('/city/1/')
         self.assertEqual(response.status_code, 200)
         city = json.loads(response.data)[0]
         self.assertEqual(city['name'], 'New York')
 
     def test_update_city(self):
         self.app.post('/city/', data={'name': 'New York'})
-        response = self.app.put('/city/1', json={'name': 'NYC'})
+        response = self.app.put('/city/1/', json={'name': 'NYC'})
         self.assertEqual(response.status_code, 200)
         city = json.loads(response.data)[0]
         self.assertEqual(city['name'], 'NYC')
 
     def test_delete_city(self):
         self.app.post('/city/', data={'name': 'New York'})
-        response = self.app.delete('/city/1')
+        response = self.app.delete('/city/1/')
         self.assertEqual(response.status_code, 200)
         result = json.loads(response.data)
         self.assertTrue(result['result'])

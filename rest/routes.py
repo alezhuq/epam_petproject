@@ -12,7 +12,7 @@ ALLOWED_EXTENTIONS = ('png', 'jpg', 'jpeg',)
 UPLOAD_FOLDER = 'static/uploads/'
 api = Blueprint('api', __name__)
 
-CORS(api)
+
 
 @api.route('/')
 @cross_origin()
@@ -48,7 +48,8 @@ def upload_image(photo):
 
 # Company CRUD
 
-@api.route("/company/<int:pk>", methods=["GET", "PUT", "DELETE"])
+@api.route("/company/<int:pk>/", methods=["GET", "PUT", "DELETE"])
+@cross_origin()
 def one_company(pk):
     requested_company = Company.query.filter_by(id=pk).first()
 
@@ -216,3 +217,4 @@ def delete_service(id):
     db.session.delete(service)
     db.session.commit()
     return {'result': True}
+
