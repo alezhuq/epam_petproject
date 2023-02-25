@@ -1,8 +1,9 @@
 import os
+import time
 
 from dotenv import load_dotenv
 from flask import Flask
-
+from flask_cors import CORS
 from models.models import db, migrate
 from rest.routes import api
 
@@ -18,10 +19,13 @@ TEST = os.getenv("TEST")
 UPLOAD_FOLDER = 'static/uploads/'
 
 app = Flask(__name__)
+cors = CORS(app, resources={r"/static/*": {"origins": "*"}})
+
 
 app.config["SECRET_KEY"] = "qweasdzxcqwesadxc"
+time.sleep(5)
 
-if __name__ == "__main__":
+if TEST == "False":
     app.config["SQLALCHEMY_DATABASE_URI"] = f"""{DATABASE}://{USER}:{PASSWORD}@{HOST}:{PORT}/{NAME}"""
 
 else:

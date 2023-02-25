@@ -4,14 +4,18 @@ import os
 from flask import Blueprint, request, flash, redirect, abort
 from werkzeug.utils import secure_filename
 
+from flask_cors import cross_origin, CORS
+
 from models.models import Company, db, City, Service
 
 ALLOWED_EXTENTIONS = ('png', 'jpg', 'jpeg',)
 UPLOAD_FOLDER = 'static/uploads/'
 api = Blueprint('api', __name__)
 
+CORS(api)
 
 @api.route('/')
+@cross_origin()
 def index():
     result = {'status': 'working'}
     return json.dumps(result)
@@ -43,7 +47,8 @@ def upload_image(photo):
 
 
 # Company CRUD
-@api.route("/company/<int:pk>", methods=["GET", "PUT", "DELETE"])
+
+@api.route("/company/<int:pk>/", methods=["GET", "PUT", "DELETE"])
 def one_company(pk):
     requested_company = Company.query.filter_by(id=pk).first()
 
@@ -78,7 +83,8 @@ def one_company(pk):
         return json.dumps({"result": True})
 
 
-@api.route('/company', methods=["GET", "POST"])
+@api.route('/company/', methods=["GET", "POST"])
+@cross_origin()
 def company():
     if request.method == "GET":
         company = Company.query.all()
@@ -110,7 +116,8 @@ def company():
 
 
 # City CRUD
-@api.route('/city', methods=["GET", "POST"])
+@api.route('/city/', methods=["GET", "POST"])
+@cross_origin()
 def city():
     if request.method == "GET":
         requested_city = City.query.all()
@@ -131,6 +138,7 @@ def city():
 
 
 @api.route("/city/<int:pk>", methods=["GET", "PUT", "DELETE"])
+@cross_origin()
 def one_city(pk):
     requested_city = City.query.filter_by(id=pk).first()
     if requested_city is None:
@@ -152,13 +160,15 @@ def one_city(pk):
         return json.dumps({"result": True})
 
 
-@api.route('/service', methods=['GET'])
+@api.route('/service/', methods=['GET'])
+@cross_origin()
 def get_services():
     services = Service.query.all()
     return services
 
 
-@api.route('/service', methods=['POST'])
+@api.route('/service/', methods=['POST'])
+@cross_origin()
 def create_service():
     name = request.json['name']
     description = request.json['description']
@@ -171,6 +181,7 @@ def create_service():
 
 
 @api.route('/service/<int:id>', methods=['GET'])
+@cross_origin()
 def get_service(id):
     service = Service.query.filter_by(id=id).first()
     if service is None:
@@ -179,6 +190,7 @@ def get_service(id):
 
 
 @api.route('/service/<int:id>', methods=['PUT'])
+@cross_origin()
 def update_service(id):
     service = Service.query.filter_by(id=id).first()
     if service is None:
@@ -196,6 +208,7 @@ def update_service(id):
 
 
 @api.route('/service/<int:id>', methods=['DELETE'])
+@cross_origin()
 def delete_service(id):
     service = Service.query.filter_by(id=id).first()
     if service is None:
