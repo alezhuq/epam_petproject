@@ -35,7 +35,7 @@ class CompanyTestCase(unittest.TestCase):
         self.app_context.pop()
 
     def test_get_all_companies(self):
-        response = self.app.get('/company')
+        response = self.app.get('/company/')
         self.assertEqual(response.status_code, 200)
         self.assertIn(self.test_company.name, str(response.data))
 
@@ -59,7 +59,7 @@ class CompanyTestCase(unittest.TestCase):
 
         data['photo'] = (image_bytes, 'test.jpg')
 
-        response = self.app.post('/company', data=data, content_type='multipart/form-data')
+        response = self.app.post('/company/', data=data, content_type='multipart/form-data')
         self.assertEqual(response.status_code, 200)
         self.assertIn(data['name'], str(response.data))
 
@@ -117,7 +117,7 @@ class ServiceTestCase(unittest.TestCase):
         self.app_context.pop()
 
     def test_create_service(self):
-        response = self.app.post('/service', json={
+        response = self.app.post('/service/', json={
             'name': 'Test Service',
             'description': 'This is a test service',
             'price': 100,
@@ -150,7 +150,7 @@ class ServiceTestCase(unittest.TestCase):
         service2 = Service(name='Test Service 2', description='This is another test service', price=200, company_id=1)
         db.session.add_all([service1, service2])
         db.session.commit()
-        response = self.app.get('/service')
+        response = self.app.get('/service/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json), 2)
 
@@ -198,14 +198,14 @@ class CityTestCase(unittest.TestCase):
         self.app_context.pop()
 
     def test_create_city(self):
-        response = self.app.post('/city', data={'name': 'New York'})
+        response = self.app.post('/city/', data={'name': 'New York'})
         self.assertEqual(response.status_code, 200)
         city = json.loads(response.data)[0]
         self.assertEqual(city['name'], 'New York')
 
     def test_get_all_cities(self):
-        self.app.post('/city', data={'name': 'New York'})
-        self.app.post('/city', data={'name': 'San Francisco'})
+        self.app.post('/city/', data={'name': 'New York'})
+        self.app.post('/city/', data={'name': 'San Francisco'})
         response = self.app.get('/city')
         self.assertEqual(response.status_code, 200)
         cities = json.loads(response.data)
@@ -214,21 +214,21 @@ class CityTestCase(unittest.TestCase):
         self.assertEqual(cities[1]['name'], 'San Francisco')
 
     def test_get_city(self):
-        self.app.post('/city', data={'name': 'New York'})
+        self.app.post('/city/', data={'name': 'New York'})
         response = self.app.get('/city/1')
         self.assertEqual(response.status_code, 200)
         city = json.loads(response.data)[0]
         self.assertEqual(city['name'], 'New York')
 
     def test_update_city(self):
-        self.app.post('/city', data={'name': 'New York'})
+        self.app.post('/city/', data={'name': 'New York'})
         response = self.app.put('/city/1', json={'name': 'NYC'})
         self.assertEqual(response.status_code, 200)
         city = json.loads(response.data)[0]
         self.assertEqual(city['name'], 'NYC')
 
     def test_delete_city(self):
-        self.app.post('/city', data={'name': 'New York'})
+        self.app.post('/city/', data={'name': 'New York'})
         response = self.app.delete('/city/1')
         self.assertEqual(response.status_code, 200)
         result = json.loads(response.data)
