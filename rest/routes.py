@@ -138,7 +138,7 @@ def city():
         return [new_city]
 
 
-@api.route("/city/<int:pk>", methods=["GET", "PUT", "DELETE"])
+@api.route("/city/<int:pk>/", methods=["GET", "PUT", "DELETE"])
 @cross_origin()
 def one_city(pk):
     requested_city = City.query.filter_by(id=pk).first()
@@ -181,7 +181,7 @@ def create_service():
     return [service]
 
 
-@api.route('/service/<int:id>', methods=['GET'])
+@api.route('/service/<int:id>/', methods=['GET'])
 @cross_origin()
 def get_service(id):
     service = Service.query.filter_by(id=id).first()
@@ -190,7 +190,7 @@ def get_service(id):
     return [service]
 
 
-@api.route('/service/<int:id>', methods=['PUT'])
+@api.route('/service/<int:id>/', methods=['PUT'])
 @cross_origin()
 def update_service(id):
     service = Service.query.filter_by(id=id).first()
@@ -208,7 +208,7 @@ def update_service(id):
     return [service]
 
 
-@api.route('/service/<int:id>', methods=['DELETE'])
+@api.route('/service/<int:id>/', methods=['DELETE'])
 @cross_origin()
 def delete_service(id):
     service = Service.query.filter_by(id=id).first()
