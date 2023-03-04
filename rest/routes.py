@@ -3,15 +3,16 @@ import os
 
 from flask import Blueprint, request, flash, redirect, abort
 from werkzeug.utils import secure_filename
-
+from sqlalchemy.orm import subqueryload
 from flask_cors import cross_origin, CORS
 
 from models.models import Company, db, City, Service
 
+from backend.models.models import cities_companies
+
 ALLOWED_EXTENTIONS = ('png', 'jpg', 'jpeg',)
 UPLOAD_FOLDER = 'static/uploads/'
 api = Blueprint('api', __name__)
-
 
 
 @api.route('/')
@@ -51,31 +52,57 @@ def upload_image(photo):
 @api.route("/company/<int:pk>/", methods=["GET", "PUT", "DELETE"])
 @cross_origin()
 def one_company(pk):
-    requested_company = Company.query.filter_by(id=pk).first()
-
-    if requested_company is None:
-        abort(404)
-
     if request.method == "GET":
-        return [requested_company]
 
+        query = db.session.query(
+            Company, db.func.group_concat(db.func.json_object(
+                'name', Service.name,
+                'description', Service.description,
+                'price', Service.price).label("services"))
+        ).outerjoin(
+            Service, Service.company_id == Company.id
+        ).filter_by(
+            id=pk
+        ).group_by(
+            Company.id
+        ).first()
+
+        requested_company = []
+
+        company, service = query
+        company_dict = {key: value for key, value in company.__dict__.items() if not key.startswith('_')}
+        service_dict = eval(service) if service is not None else {}
+
+        record = {**company_dict, 'services': service_dict}
+        requested_company.append(record)
+
+        if requested_company is None:
+            abort(404)
+        return requested_company
+    requested_company = Company.query.filter_by(id=pk).first()
     if request.method == "PUT":
-
+        print(requested_company)
         if request.files.get("photo") is not None:
             photo = request.files['photo']
             filename = str(upload_image(photo))
             requested_company.photo = filename
-        requested_company.name = request.form.get("name", requested_company.name)
-        requested_company.description = request.form.get("description", requested_company.description)
-        requested_company.website = request.form.get("website", requested_company.website)
-        requested_company.email = request.form.get("email", requested_company.email)
-        requested_company.phonenum = request.form.get("phonenum", requested_company.phonenum)
+        requested_company.name = request.json.get("name", requested_company.name)
+        requested_company.description = request.json.get("description", requested_company.description)
+        requested_company.website = request.json.get("website", requested_company.website)
+        requested_company.email = request.json.get("email", requested_company.email)
+        requested_company.phonenum = request.json.get("phonenum", requested_company.phonenum)
 
-        requested_company.cities = request.form.get("cities", requested_company.cities)
+        cities = request.json.get("cities", requested_company.cities)
+        print(cities)
+        company_cities = City.query.filter(City.id.in_(cities)).all()
+        print(company_cities, "comp cities")
+        for city in company_cities:
+            requested_company.cities.append(city)
 
         db.session.commit()
+        print(requested_company.cities)
 
-        return [requested_company]
+        return json.dumps({"result": True})
 
     if request.method == "DELETE":
         db.session.delete(requested_company)
@@ -88,16 +115,36 @@ def one_company(pk):
 @cross_origin()
 def company():
     if request.method == "GET":
-        company = Company.query.all()
-        return company
+        query = db.session.query(
+            Company, db.func.group_concat(db.func.json_object(
+                'name', City.name,
+            ).label("cities"))
+        ).select_from(
+            Company
+        ).outerjoin(
+            cities_companies, Company.id == cities_companies.c.company_id
+        ).outerjoin(
+            City, cities_companies.c.city_id == City.id
+        ).group_by(
+            Company.id
+        ).all()
+        print(query)
+        requested_company = []
+        # converting to JSON serializable format
+        for company, city in query:
+            company_dict = {key: value for key, value in company.__dict__.items() if not key.startswith('_')}
+            service_dict = eval(city) if city is not None else {}
+            record = {**company_dict, 'city': service_dict}
+            requested_company.append(record)
+        return requested_company
 
     if request.method == "POST":
         try:
-            name = request.form['name']
-            description = request.form['description']
-            website = request.form['website']
-            email = request.form['email']
-            phonenum = request.form['phonenum']
+            name = request.json['name']
+            description = request.json['description']
+            website = request.json['website']
+            email = request.json['email']
+            phonenum = request.json['phonenum']
             photo = request.files['photo']
         except Exception:
             return abort(404)
@@ -126,7 +173,7 @@ def city():
 
     if request.method == "POST":
         try:
-            name = request.form['name']
+            name = request.json['name']
         except Exception:
             return abort(404)
 
@@ -217,4 +264,3 @@ def delete_service(id):
     db.session.delete(service)
     db.session.commit()
     return {'result': True}
-

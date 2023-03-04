@@ -1,6 +1,5 @@
 # temporary : personal note
 
-daaa blyat yobaniy vrot
 
 command for compose 
 command: flask --debug run --host=0.0.0.0
