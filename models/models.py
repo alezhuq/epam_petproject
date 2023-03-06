@@ -27,7 +27,7 @@ class Company(db.Model):
     email = db.Column(db.String(100))
     phonenum = db.Column(db.Integer)
     photo = db.Column(db.String(100))
-    services = db.relationship('Service', backref='company', lazy=True)
+    services = db.relationship('Service', backref='company', lazy=True, cascade='all, delete')
 
 
 @dataclass
@@ -42,12 +42,12 @@ class Service(db.Model):
     name = db.Column(db.String(100), unique=True)
     description = db.Column(db.String(100))
     price = db.Column(db.Integer)
-    company_id = db.Column(db.Integer, db.ForeignKey("company.id"), nullable=False)
+    company_id = db.Column(db.Integer, db.ForeignKey("company.id", ondelete='CASCADE'), nullable=False)
 
 
 cities_companies = db.Table('cities_companies',
-    db.Column('city_id', db.Integer, db.ForeignKey('city.id'), primary_key=True),
-    db.Column('company_id', db.Integer, db.ForeignKey('company.id'), primary_key=True)
+    db.Column('city_id', db.Integer, db.ForeignKey('city.id', ondelete='CASCADE'), primary_key=True),
+    db.Column('company_id', db.Integer, db.ForeignKey('company.id', ondelete='CASCADE'), primary_key=True)
 )
 
 

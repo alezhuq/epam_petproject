@@ -8,7 +8,7 @@ from flask_cors import cross_origin, CORS
 
 from models.models import Company, db, City, Service
 
-from backend.models.models import cities_companies
+from models.models import cities_companies
 
 ALLOWED_EXTENTIONS = ('png', 'jpg', 'jpeg',)
 UPLOAD_FOLDER = 'static/uploads/'
@@ -54,11 +54,23 @@ def upload_image(photo):
 def one_company(pk):
     if request.method == "GET":
 
+        # query = db.session.query(
+        #     Company, db.func.group_concat(db.func.json_object(
+        #         'name', Service.name,
+        #         'description', Service.description,
+        #         'price', Service.price).label("services"))
+        # ).outerjoin(
+        #     Service, Service.company_id == Company.id
+        # ).filter_by(
+        #     id=pk
+        # ).group_by(
+        #     Company.id
+        # ).first()
         query = db.session.query(
-            Company, db.func.group_concat(db.func.json_object(
+            Company, db.func.json_arrayagg(db.func.json_object(
                 'name', Service.name,
                 'description', Service.description,
-                'price', Service.price).label("services"))
+                'price', Service.price)).label("services")
         ).outerjoin(
             Service, Service.company_id == Company.id
         ).filter_by(
@@ -66,7 +78,6 @@ def one_company(pk):
         ).group_by(
             Company.id
         ).first()
-
         requested_company = []
 
         company, service = query
