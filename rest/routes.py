@@ -144,10 +144,10 @@ def company():
         print(query)
         requested_company = []
         # converting to JSON serializable format
-        null = None
+
         for company, city in query:
             company_dict = {key: value for key, value in company.__dict__.items() if not key.startswith('_')}
-            service_dict = eval(city) if city is not None else {}
+            service_dict = {} if not city or city == '""' else eval(city)
             record = {**company_dict, 'city': service_dict}
             requested_company.append(record)
         return requested_company
