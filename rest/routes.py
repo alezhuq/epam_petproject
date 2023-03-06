@@ -83,38 +83,37 @@ def one_company(pk):
             abort(404)
         requested_company = []
         company, service = query
+        null = None
         company_dict = {key: value for key, value in company.__dict__.items() if not key.startswith('_')}
-        service_dict = eval(service) if service is not None else {}
+        service_dict = {} if not service else eval(service)
 
         record = {**company_dict, 'services': service_dict}
         requested_company.append(record)
 
-
         return requested_company
+
     requested_company = Company.query.filter_by(id=pk).first()
     if request.method == "PUT":
-        print(requested_company)
+
         if request.files.get("photo") is not None:
             photo = request.files['photo']
             filename = str(upload_image(photo))
             requested_company.photo = filename
-        requested_company.name = request.json.get("name", requested_company.name)
-        requested_company.description = request.json.get("description", requested_company.description)
-        requested_company.website = request.json.get("website", requested_company.website)
-        requested_company.email = request.json.get("email", requested_company.email)
-        requested_company.phonenum = request.json.get("phonenum", requested_company.phonenum)
+        requested_company.name = request.form.get("name", requested_company.name)
+        requested_company.description = request.form.get("description", requested_company.description)
+        requested_company.website = request.form.get("website", requested_company.website)
+        requested_company.email = request.form.get("email", requested_company.email)
+        requested_company.phonenum = request.form.get("phonenum", requested_company.phonenum)
 
-        cities = request.json.get("cities", requested_company.cities)
-        print(cities)
+        cities = request.form.get("cities", requested_company.cities)
+
         company_cities = City.query.filter(City.id.in_(cities)).all()
-        print(company_cities, "comp cities")
         for city in company_cities:
             requested_company.cities.append(city)
 
         db.session.commit()
-        print(requested_company.cities)
 
-        return json.dumps({"result": True})
+        return [requested_company]
 
     if request.method == "DELETE":
         db.session.delete(requested_company)
@@ -141,24 +140,24 @@ def company():
         ).group_by(
             Company.id
         ).all()
-        print(query)
         requested_company = []
         # converting to JSON serializable format
-
+        null = None
         for company, city in query:
             company_dict = {key: value for key, value in company.__dict__.items() if not key.startswith('_')}
-            service_dict = {} if not city or city == '""' else eval(city)
-            record = {**company_dict, 'city': service_dict}
+            city_dict = {} if not city else eval(city)
+            record = {**company_dict, 'city': city_dict}
             requested_company.append(record)
         return requested_company
 
     if request.method == "POST":
         try:
-            name = request.json['name']
-            description = request.json['description']
-            website = request.json['website']
-            email = request.json['email']
-            phonenum = request.json['phonenum']
+            name = request.form['name']
+            description = request.form['description']
+            website = request.form['website']
+            email = request.form['email']
+            phonenum = request.form['phonenum']
+
             photo = request.files['photo']
         except Exception:
             return abort(404)

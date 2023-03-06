@@ -198,14 +198,14 @@ class CityTestCase(unittest.TestCase):
         self.app_context.pop()
 
     def test_create_city(self):
-        response = self.app.post('/city/', data={'name': 'New York'})
+        response = self.app.post('/city/', json={'name': 'New York'})
         self.assertEqual(response.status_code, 200)
         city = json.loads(response.data)[0]
         self.assertEqual(city['name'], 'New York')
 
     def test_get_all_cities(self):
-        self.app.post('/city/', data={'name': 'New York'})
-        self.app.post('/city/', data={'name': 'San Francisco'})
+        self.app.post('/city/', json={'name': 'New York'})
+        self.app.post('/city/', json={'name': 'San Francisco'})
         response = self.app.get('/city/')
         self.assertEqual(response.status_code, 200)
         cities = json.loads(response.data)
@@ -214,21 +214,21 @@ class CityTestCase(unittest.TestCase):
         self.assertEqual(cities[1]['name'], 'San Francisco')
 
     def test_get_city(self):
-        self.app.post('/city/', data={'name': 'New York'})
+        self.app.post('/city/', json={'name': 'New York'})
         response = self.app.get('/city/1/')
         self.assertEqual(response.status_code, 200)
         city = json.loads(response.data)[0]
         self.assertEqual(city['name'], 'New York')
 
     def test_update_city(self):
-        self.app.post('/city/', data={'name': 'New York'})
+        self.app.post('/city/', json={'name': 'New York'})
         response = self.app.put('/city/1/', json={'name': 'NYC'})
         self.assertEqual(response.status_code, 200)
         city = json.loads(response.data)[0]
         self.assertEqual(city['name'], 'NYC')
 
     def test_delete_city(self):
-        self.app.post('/city/', data={'name': 'New York'})
+        self.app.post('/city/', json={'name': 'New York'})
         response = self.app.delete('/city/1/')
         self.assertEqual(response.status_code, 200)
         result = json.loads(response.data)
