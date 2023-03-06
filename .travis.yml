@@ -9,7 +9,7 @@ install:
   - pip install -r requirements.txt
   - pip install coveralls
 script:
-  - pylint *.py
+  - python -m pylint *.py
   - coverage run --source=. -m unittest discover -s tests
 after_success:
   - coveralls
