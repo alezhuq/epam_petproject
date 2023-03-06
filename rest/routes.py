@@ -67,19 +67,21 @@ def one_company(pk):
         #     Company.id
         # ).first()
         query = db.session.query(
-            Company, db.func.json_arrayagg(db.func.json_object(
+            Company, db.func.group_concat(db.func.json_object(
                 'name', Service.name,
                 'description', Service.description,
                 'price', Service.price)).label("services")
         ).outerjoin(
             Service, Service.company_id == Company.id
-        ).filter_by(
-            id=pk
+        ).filter(
+            Company.id == pk
         ).group_by(
             Company.id
         ).first()
-        requested_company = []
 
+        if query is None:
+            abort(404)
+        requested_company = []
         company, service = query
         company_dict = {key: value for key, value in company.__dict__.items() if not key.startswith('_')}
         service_dict = eval(service) if service is not None else {}
@@ -87,8 +89,7 @@ def one_company(pk):
         record = {**company_dict, 'services': service_dict}
         requested_company.append(record)
 
-        if requested_company is None:
-            abort(404)
+
         return requested_company
     requested_company = Company.query.filter_by(id=pk).first()
     if request.method == "PUT":
@@ -126,6 +127,7 @@ def one_company(pk):
 @cross_origin()
 def company():
     if request.method == "GET":
+
         query = db.session.query(
             Company, db.func.group_concat(db.func.json_object(
                 'name', City.name,
@@ -142,6 +144,7 @@ def company():
         print(query)
         requested_company = []
         # converting to JSON serializable format
+        null = None
         for company, city in query:
             company_dict = {key: value for key, value in company.__dict__.items() if not key.startswith('_')}
             service_dict = eval(city) if city is not None else {}
