@@ -1,11 +1,12 @@
+"""Main"""
 import os
 import time
 
 from dotenv import load_dotenv
 from flask import Flask
 from flask_cors import CORS
-from models.models import db, migrate # pylint: disable=import-error
-from rest.routes import api # pylint: disable=import-error
+from models.models import db, migrate  # pylint: disable=import-error
+from rest.routes import api  # pylint: disable=import-error
 
 load_dotenv()
 
@@ -21,12 +22,11 @@ UPLOAD_FOLDER = 'static/uploads/'
 app = Flask(__name__)
 cors = CORS(app, resources={r"/static/*": {"origins": "*"}})
 
-
 app.config["SECRET_KEY"] = "qweasdzxcqwesadxc"
 time.sleep(5)
 
 if TEST == "False":
-    app.config["SQLALCHEMY_DATABASE_URI"] = f"""{DATABASE}://{USER}:{PASSWORD}@{HOST}:{PORT}/{NAME}"""
+    app.config["SQLALCHEMY_DATABASE_URI"] = f"{DATABASE}://{USER}:{PASSWORD}@{HOST}:{PORT}/{NAME}"
 
 else:
     app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///:memory:'
