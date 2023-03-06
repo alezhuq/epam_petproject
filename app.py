@@ -4,8 +4,8 @@ import time
 from dotenv import load_dotenv
 from flask import Flask
 from flask_cors import CORS
-from models.models import db, migrate
-from rest.routes import api
+from models.models import db, migrate # pylint: disable=import-error
+from rest.routes import api # pylint: disable=import-error
 
 load_dotenv()
 
