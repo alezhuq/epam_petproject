@@ -24,3 +24,10 @@ services:
       - .env
     depends_on:
       - db
+
+  react:
+    build:
+      context: .
+      dockerfile: FrontDockerfile
+    ports:
+      - "3000:3000"

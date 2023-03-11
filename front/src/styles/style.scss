@@ -1,0 +1,210 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import 'header';
+@import 'footer';
+@import 'catalog';
+@import 'contacts';
+@import 'react-lazy-load-image-component/src/effects/blur.css';
+@import 'errorPage';
+@import 'product';
+@import '~tachyons/css/tachyons.min.css';
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+img {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    pointer-events: none;
+}
+body {
+    background: #f1faff;
+    font-family: 'Roboto', sans-serif;
+    height: 100%;
+}
+.dark-mode {
+    background: #00121b;
+}
+._container {
+    max-width: 1230px;
+    margin: 0px auto;
+    padding: 0px 15px;
+}
+@media screen and (max-width:1200px) {
+    ._container {
+        max-width: 970px;
+    }
+}
+@media screen and (max-width:990px){
+    ._container {
+        max-width: 800px;
+    }
+}
+
+.field__input {
+  &:focus {
+      outline: none;
+  }
+  margin-top: 15px;
+  margin-bottom: 15px;
+  width: 300px;
+  height: 40px;
+  border-radius: 12px;
+  border: 3px solid #242582; 
+  padding: 5px;
+  font-size: 20px;
+  font-weight: 500;
+}
+.custom__button {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-decoration: none;
+  align-items: center;
+  background-color: rgb(7, 7, 188);
+  border: 0;
+  border-radius: 100px;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: -apple-system, system-ui, system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Fira Sans", Ubuntu, Oxygen, "Oxygen Sans", Cantarell, "Droid Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  justify-content: center;
+  line-height: 20px;
+  max-width: 480px;
+  min-height: 40px;
+  min-width: 0px;
+  overflow: hidden;
+  padding: 0px;
+  padding-left: 20px;
+  padding-right: 20px;
+  text-align: center;
+  touch-action: manipulation;
+  transition: background-color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s, box-shadow 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s, color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s;
+  user-select: none;
+  -webkit-user-select: none;
+  vertical-align: middle;
+  transition: all 0.3s;
+  &:hover,
+  &:focus { 
+  color: #ffffff;
+  transform: translateY(-3px);
+  transition: all 0.3s;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  &:active {
+  transform: translateY(1px);
+  color: rgb(255, 255, 255, .7);
+  transition: all 0.3s;
+  }
+
+  &:disabled { 
+  cursor: not-allowed;
+  background: rgba(0, 0, 0, .08);
+  color: rgba(0, 0, 0, .3);
+  }
+}
+
+
+
+.bg-gray {
+    background-color: var(--color-gray);
+  }
+  
+  .color-gray {
+    color: var(--color-gray);
+  }
+  
+  .btn {
+    cursor: pointer;
+  }
+  
+  .absolute-center-y {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+  .item-grid {
+    margin-left: -1rem;
+    margin-right: -1rem;
+  }
+  
+  .w15 {
+    width: 1.5rem;
+  }
+  
+  .h15 {
+    height: 1.5rem;
+  }
+  
+  .w125 {
+    width: 1.25rem;
+  }
+  
+  .h125 {
+    height: 1.25rem;
+  }
+  
+  .checkbox {
+    box-shadow: 0 0 0 1.5px var(--color-gray-dark);
+  }
+  
+  .checkbox:hover,
+  .checkbox:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 1.5px var(--color-primary);
+  }
+  
+  .checkbox:hover .checkbox__icon,
+  .checkbox:focus .checkbox__icon {
+    color: var(--color-primary);
+  }
+  
+  .checkbox [data-state='checked'] {
+    display: flex;
+  }
+  
+  .search {
+    box-shadow: 0 2px 0 0 var(--color-gray-dark);
+  }
+  
+  .search.focused {
+    box-shadow: 0 2px 0 0 var(--color-primary);
+  }
+  
+  .slider[data-orientation='horizontal'] {
+    height: 20px;
+  }
+  
+  .slider__track,
+  .slider__range {
+    height: 3px;
+  }
+  
+  .slider__range {
+    content: '';
+    display: block;
+    position: absolute;
+  }
+  
+  .slider__thumb {
+    box-shadow: 0 0 0 2px var(--color-primary);
+  }
+  
+  .slider__thumb:hover {
+    background-color: var(--color-primary);
+  }
+  
+  .select {
+    box-shadow: 0 0 0 2px var(--color-gray-dark);
+  }
+  
+  .select:focus {
+    box-shadow: 0 0 0 2px var(--color-primary);
+  }
+

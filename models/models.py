@@ -12,6 +12,23 @@ migrate = Migrate(db=db)
 
 @dataclass
 class Company(db.Model):
+    """
+    A dataclass representing a company that provides services.
+
+    Attributes:
+        id (int): The unique ID of the company.
+        name (str): The name of the company.
+        description (str): A description of the company.
+        website (str): The URL of the company's website.
+        email (str): The email address of the company.
+        phonenum (str): The phone number of the company.
+        photo (str): The URL of a photo of the company.
+        services (list): A list of services provided by the company.
+
+    Relationship:
+        A company can have many services associated with it.
+
+    """
     id: int
     name: str
     description: str
@@ -24,7 +41,7 @@ class Company(db.Model):
     name = db.Column(db.String(100), unique=True)
     description = db.Column(db.String(100))
     website = db.Column(db.String(100))
-    email = db.Column(db.String(100))
+    email = db.Column(db.String(100), unique=True)
     phonenum = db.Column(db.Integer)
     photo = db.Column(db.String(100))
     services = db.relationship('Service', backref='company', lazy=True, cascade='all, delete')
@@ -32,6 +49,20 @@ class Company(db.Model):
 
 @dataclass
 class Service(db.Model):
+    """
+    A dataclass representing a service provided by a company.
+
+    Attributes:
+        id (int): The unique ID of the service.
+        name (str): The name of the service.
+        description (str): A description of the service.
+        price (int): The price of the service.
+        company_id (int): The ID of the company that provides the service.
+
+    Relationship:
+        A service belongs to a company.
+
+    """
     id: int
     name: str
     description: str
@@ -53,6 +84,17 @@ cities_companies = db.Table('cities_companies',
 
 @dataclass
 class City(db.Model):
+    """
+    A dataclass representing a city.
+
+    Attributes:
+        id (int): The unique ID of the city.
+        name (str): The name of the city.
+
+    Relationship:
+        A city can have many companies associated with it.
+
+    """
     id: int
     name: str
 

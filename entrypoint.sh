@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
-flask --debug run --host=0.0.0.0
+sleep 5
+gunicorn --bind 0.0.0.0:5000 'app:app' --reload --access-logfile -

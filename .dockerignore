@@ -1,5 +1,5 @@
-data
-.env
 front/node_modules
 *.log
 dist
+data
+.env
