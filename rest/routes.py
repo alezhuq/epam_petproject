@@ -229,12 +229,12 @@ def company():
             phonenum = request.form['phonenum']
             if request.form.get("cities"):
                 cities = [int(city_id) for city_id in request.form.get("cities").split()]
-
-            company_cities = City.query.filter(City.id.in_(cities)).all()
+                company_cities = City.query.filter(City.id.in_(cities)).all()
 
             photo = request.files.get('photo', None)
         except Exception as error:
             mylogs.error(f"{error=}, {request.url}, Bad request")
+            print(f"{error=}, {request.url}, Bad request")
             return abort(400)
         filename = str(upload_image(photo)) if photo else None
         new_company = Company(
@@ -245,8 +245,9 @@ def company():
             phonenum=phonenum,
             photo=filename,
         )
-        for city in company_cities:
-            new_company.cities.append(city)
+        if request.form.get("cities"):
+            for city in company_cities:
+                new_company.cities.append(city)
         db.session.add(new_company)
         db.session.commit()
         mylogs.info(f"{request.url}, OK")
