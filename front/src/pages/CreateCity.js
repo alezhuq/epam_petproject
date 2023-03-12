@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { postCity, putCity } from "../api/productsAPI";
+import { postCity, putCity, deleteCity } from "../api/productsAPI";
 import useCitiesStore from "../store/citiesStore";
 import useCities from "../hooks/useCities";
 import { PuffLoader } from "react-spinners";
@@ -8,6 +8,8 @@ const CreateCity = () => {
 	const citiesData = useCitiesStore((state) => state.cities);
 	const setCitiesData = useCitiesStore((state) => state.setCities);
 	const [city, setCity] = useState();
+
+	const [delId, setDelId] = useState();
 	const [changeCity, setChangeCity] = useState();
 	const [cityId, setCityId] = useState();
 	useEffect(() => {
@@ -37,6 +39,15 @@ const CreateCity = () => {
 			putCity(cityId, changeCity);
 			setCityId(null);
 			setChangeCity("");
+		} else {
+			alert("missing required data");
+		}
+	}
+
+	function delCity() {
+		if (delId) {
+			deleteCity(delId);
+			setDelId(null);
 		} else {
 			alert("missing required data");
 		}
@@ -82,6 +93,24 @@ const CreateCity = () => {
 			<br />
 			<button onClick={updateCity} className="custom__button">
 				Update
+			</button>
+			<br />
+			<h1>Delete City</h1>
+			<br />
+			<select
+				className="products__sort"
+				onChange={(e) => {
+					setDelId(e.target.value);
+				}}
+				value={delId}
+			>
+				<option value={null}>choose City...</option>;
+				{citiesData.map((elem) => {
+					return <option value={elem.id}>{elem.name}</option>;
+				})}
+			</select>
+			<button onClick={delCity} className="product__delete">
+				delet eCity
 			</button>
 			<br />
 		</div>

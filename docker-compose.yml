@@ -10,7 +10,6 @@ services:
     ports:
       - "3306:3306"
 
-
   web:
     build: .
     environment:
@@ -29,5 +28,7 @@ services:
     build:
       context: .
       dockerfile: FrontDockerfile
+    volumes:
+      - .:/backend
     ports:
       - "3000:3000"

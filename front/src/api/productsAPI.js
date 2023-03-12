@@ -9,6 +9,16 @@ export const deleteOne = async (id) => {
 	return;
 };
 
+export const deleteCity = async (id) => {
+	$host.delete(`/city/${id}/`);
+	return;
+};
+
+export const deleteService = async (id) => {
+	$host.delete(`/service/${id}/`);
+	return;
+};
+
 export const postCity = async (name) => {
 	$host.post(`/city/`, { name: name });
 	return;

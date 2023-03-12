@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { postService } from "../api/productsAPI";
+import { deleteService, postService, putService } from "../api/productsAPI";
 import useCompanies from "../hooks/useCompanies";
 import useServices from "../hooks/useServices";
 import useCompaniesStore from "../store/companiesStore";
@@ -14,6 +14,8 @@ const CreateService = () => {
 	const [services, setServices] = useState([]);
 
 	const [serviceId, setServiceId] = useState();
+
+	const [delId, setDelId] = useState();
 
 	const [companyId, setCompanyId] = useState();
 	const [serviceName, setServiceName] = useState();
@@ -37,11 +39,19 @@ const CreateService = () => {
 		}
 	}
 	function updateService() {
-		postService(companyId, serviceName, serviceDescr, servicePrice, companyId);
+		putService(companyId, serviceName, serviceDescr, servicePrice, companyId);
 		setUpdServiceName("");
 		setUpdServiceDescr("");
 		setUpdCompanyId("");
 		setUpdServicePrice(null);
+	}
+	function delService() {
+		if (delId) {
+			deleteService(delId);
+			setDelId(null);
+		} else {
+			alert("missing required data");
+		}
 	}
 	useEffect(() => {
 		if (getCompanies.data && getServices.data) {
@@ -137,6 +147,25 @@ const CreateService = () => {
 			<br />
 			<button onClick={updateService} className="custom__button">
 				Update Service
+			</button>
+			<br />
+			<h1>Delete Service</h1>
+			<br />
+			<select
+				className="products__sort"
+				onChange={(e) => {
+					setDelId(e.target.value);
+				}}
+				value={delId}
+			>
+				<br />
+				<option value={null}>choose Service...</option>;
+				{services.map((elem) => {
+					return <option value={elem.id}>{elem.name}</option>;
+				})}
+			</select>
+			<button onClick={delService} className="product__delete">
+				delete Service
 			</button>
 		</div>
 	);
