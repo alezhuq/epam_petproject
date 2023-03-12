@@ -3,3 +3,4 @@ data
 front/node_modules
 *.log
 dist
+static

@@ -18,7 +18,7 @@ flask db upgrade
 
 # Service API
 ## Get all services
-URL: /service/
+URL: /service/d
 
 Method: GET
 
