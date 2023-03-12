@@ -14,9 +14,9 @@ sudo apt-get update
 3) install docker and docker-compose :
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 4) run docker containers:
-4.1) for the first time:
+#### 4.1) for the first time:
 sudo docker-compose up --build
-4.2) if already built:
+#### 4.2) if already built:
 sudo docker-compose up
 #### !important: if you get "permission denied: unknown" on the entrypoint.sh file, run this command
 sudo chmod +x entrypoint.sh
